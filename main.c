@@ -17,9 +17,10 @@ int main  {
  int task = 1;  //hard-coded task selection
  int RotationKey = 1;   //hard-coded key, rotation of 1
  int SubstitutionKey = QWERTYUIOPASDFGHJKLZXCVBNM   //not sure on the datatype yet
+ char text[] = "some text";
  // for the final program the user will be prompted to enter these values/letters
  
- // text will need to be entered somehow
+ 
  
  if(task = 1)   {
      EncryptRotation(RotationKey, text);
