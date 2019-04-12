@@ -12,20 +12,20 @@ int main()  {
     then resulting text will then be printed to the user
     */
  
- int task;  //for task selection
- int RotationKey;   //rotation key
+ int task = 1;  //for task selection
+ int RotationKey = 1;   //rotation key
  char SubstitutionKey[] = "QWERTYUIOPASDFGHJKLZXCVBNM";   //hardcoded substitution key
- char text[] = "ABCDEFGH";
+ char text[] = "AbCDeFGHz";
  // for the final program the user will be prompted to enter the message
  
  //now displays a menu and prompts the user to enter the task number
- printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
- scanf("%d", &task);
+ //     printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
+ //     scanf("%d", &task);
  
  if(task == 1)   {
-     printf("\nEnter rotation key: ");  //prompts user to enter rotation key
-     scanf("%d", &RotationKey);
-     printf("Enter message to encrypt: ");  //prompts user to enter text, still unsure of how to scan the text
+     // printf("\nEnter rotation key: ");  //prompts user to enter rotation key
+     // scanf("%d", &RotationKey);
+     // printf("Enter message to encrypt: ");  //prompts user to enter text, still unsure of how to scan the text
      
      //scanf("%c", &text);
      //repeatedly read in characters
@@ -55,11 +55,16 @@ int main()  {
         //set c in text to the rotated version of c
         int i = 0;
         while(text[i] != '\0') {
-            if(text[i] >= 65 && text[i] <= 90)  {
+            if(text[i] >= 65 && text[i] <= 90)  {   //only does this if it is a letter
                 text[i] = text[i] - 65;
                 text[i] = (text[i] + key)%26;
                 text[i] = text[i] + 65;
         }
+            else if(text[i] >= 97 && text[i] <= 122)  {     //changes lower case to upper case
+                text[i] = text[i] - 95;
+                text[i] = (text[i] - key + 26)%26;
+                text[i] = text[i] + 65;
+            } 
             printf("%c", text[i]);
             i++;
         }
@@ -72,7 +77,7 @@ int main()  {
                 text[i] = text[i] - 65;
                 text[i] = (text[i] - key + 26)%26;
                 text[i] = text[i] + 65;
-            }
+            }      
             printf("%c", text[i]);
             i++;
         }
