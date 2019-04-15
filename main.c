@@ -12,11 +12,11 @@ int main()  {
     then resulting text will then be printed to the user
     */
  
- int task = 1;  //for task selection
- int RotationKey = 1;   //rotation key
- char SubstitutionKey[] = "QWERTYUIOPASDFGHJKLZXCVBNM";   //hardcoded substitution key
- char text[] = "AbCDeFGHz";
- // for the final program the user will be prompted to enter the message
+ int task = 4;  //for task selection
+ int RotationKey = 3;   //rotation key
+ char SubstitutionKey[] = "AZERTYUIOPQSDFGHJKLMWXCVBN"; //hardcoded substitution key
+ char text[] = "MIOL MIOFU CGKQL MGG";
+ // for the final program the user will be prompted to enter the file name
  
  //now displays a menu and prompts the user to enter the task number
  //     printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
@@ -55,19 +55,20 @@ int main()  {
         //set c in text to the rotated version of c
         int i = 0;
         while(text[i] != '\0') {
-            if(text[i] >= 65 && text[i] <= 90)  {   //only does this if it is a letter
+            if(text[i] >= 65 && text[i] <= 90)  {   //only does this if it is a capital letter
                 text[i] = text[i] - 65;
                 text[i] = (text[i] + key)%26;
                 text[i] = text[i] + 65;
         }
-            else if(text[i] >= 97 && text[i] <= 122)  {     //changes lower case to upper case
-                text[i] = text[i] - 95;
-                text[i] = (text[i] - key + 26)%26;
-                text[i] = text[i] + 65;
+            else if(text[i] >= 97 && text[i] <= 122)  {     //changes lower case to upper case while encrypting
+               text[i] = text[i] - 97;   
+               text[i] = (text[i] + key)%26;
+               text[i] = text[i] + 65;
             } 
             printf("%c", text[i]);
             i++;
         }
+        printf("\n");
  }
  
  void DecryptRotation(int key, char text[])   {            //this function also works
@@ -77,17 +78,52 @@ int main()  {
                 text[i] = text[i] - 65;
                 text[i] = (text[i] - key + 26)%26;
                 text[i] = text[i] + 65;
-            }      
+            }  
+            else if(text[i] >= 97 && text[i] <= 122)    {
+                text[i] = text[i] - 97;
+                text[i] = (text[i] - key + 26)%26;
+                text[i] = text[i] + 65;
+            }
             printf("%c", text[i]);
             i++;
         }
         printf("\n");
  } 
  
- void EncryptSubstitution(char key[], char text[])  {
-     
+ void EncryptSubstitution(char key[], char text[])  {   //this function works
+     int i = 0;
+     int LetterNumber;  //this int is used to the letter at a certain position in the key
+ while(text[i] != '\0') {
+            if(text[i] >= 65 && text[i] <= 90)  {   //only does this if it is a capital letter
+                LetterNumber = text[i] - 65;
+                text[i] = key[LetterNumber];
+        }
+            else if(text[i] >= 97 && text[i] <= 122)  {     //changes lower case to upper case and encrypts
+               LetterNumber = text[i] - 97;
+               text[i] = key[LetterNumber];
+            } 
+            printf("%c", text[i]);
+            i++;
+        }
+        printf("\n");
  }
  
  void DecryptSubstitution(char key[], char text[])   {
-     
+     int i = 0;
+     int LetterNumber; 
+     char Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";    //correct alphabet to compare key to
+ while(text[i] != '\0') {
+            if(text[i] >= 65 && text[i] <= 90)  {  
+                LetterNumber = text[i] - 65;
+                //text[i] = key[LetterNumber];
+        }
+            else if(text[i] >= 97 && text[i] <= 122)  {   
+               LetterNumber = text[i] - 97;
+               //text[i] = key[LetterNumber];
+            } 
+            printf("%c", Alphabet[LetterNumber]);
+            i++;
+        }
+        printf("\n");
  }
+ 
