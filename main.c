@@ -122,23 +122,24 @@ void DecryptSubstitution(char key[], char text[])   {
         
 
             printf("%c", Alphabet[c]);
-            i++;
+            
     }
         else if(text[i] >= 97 && text[i] <= 122)  {     //decrypts lowercase text
-               i = text[i] - 97; {
+               text[i] = text[i] - 97; {
             for(c = 0;text[i] != key[c];c++)    {
                 
             }
         
 
             printf("%c", Alphabet[c]);
-            i++;
+            
     }
     } else    {     //this is so it will print things that aren't letters, just as they are
         printf("%c", text[i]);
-        i++;
+        
     }
         
+ i++;
  }
  printf("\n");
  }
