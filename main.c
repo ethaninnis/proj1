@@ -15,7 +15,7 @@ int main()  {
  int task = 4;  //for task selection
  int RotationKey = 3;   //rotation key
  char SubstitutionKey[] = "AZERTYUIOPQSDFGHJKLMWXCVBN"; //hardcoded substitution key
- char text[] = "YSTT AM GFET RGTL OM ASCABL CGKQ?";
+ char text[] = "YstT AM GfeT RGTL OM ASCABL CGKQ?";
  // for the final program the user will be prompted to enter the file name
  
  //now displays a menu and prompts the user to enter the task number
@@ -125,7 +125,7 @@ void DecryptSubstitution(char key[], char text[])   {
             
     }
         else if(text[i] >= 97 && text[i] <= 122)  {     //decrypts lowercase text
-               text[i] = text[i] - 97; {
+               text[i] = text[i] - 32; {
             for(c = 0;text[i] != key[c];c++)    {
                 
             }
@@ -143,5 +143,7 @@ void DecryptSubstitution(char key[], char text[])   {
  }
  printf("\n");
  }
+ 
+ //before adding user prompts and reading from files: text all functions work with various texts and keys
 
  
