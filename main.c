@@ -15,7 +15,7 @@ int main()  {
  int task = 4;  //for task selection
  int RotationKey = 3;   //rotation key
  char SubstitutionKey[] = "AZERTYUIOPQSDFGHJKLMWXCVBN"; //hardcoded substitution key
- char text[] = "MIOL MIOFU CGKQL MGG";
+ char text[] = "YSTT AM GFET RGTL OM ASCABL CGKQ?";
  // for the final program the user will be prompted to enter the file name
  
  //now displays a menu and prompts the user to enter the task number
@@ -108,22 +108,39 @@ int main()  {
         printf("\n");
  }
  
- void DecryptSubstitution(char key[], char text[])   {
+
+void DecryptSubstitution(char key[], char text[])   {
      int i = 0;
-     int LetterNumber; 
+     int c; //rename counter 
      char Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";    //correct alphabet to compare key to
+ 
  while(text[i] != '\0') {
-            if(text[i] >= 65 && text[i] <= 90)  {  
-                LetterNumber = text[i] - 65;
-                //text[i] = key[LetterNumber];
-        }
-            else if(text[i] >= 97 && text[i] <= 122)  {   
-               LetterNumber = text[i] - 97;
-               //text[i] = key[LetterNumber];
-            } 
-            printf("%c", Alphabet[LetterNumber]);
+            if(text[i] >= 65 && text[i] <= 90)  {
+            for(c = 0;text[i] != key[c];c++)    {
+                
+            }
+        
+
+            printf("%c", Alphabet[c]);
             i++;
-        }
-        printf("\n");
+    }
+        else if(text[i] >= 97 && text[i] <= 122)  {     //decrypts lowercase text
+               i = text[i] - 97; {
+            for(c = 0;text[i] != key[c];c++)    {
+                
+            }
+        
+
+            printf("%c", Alphabet[c]);
+            i++;
+    }
+    } else    {     //this is so it will print things that aren't letters, just as they are
+        printf("%c", text[i]);
+        i++;
+    }
+        
  }
+ printf("\n");
+ }
+
  
