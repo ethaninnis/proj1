@@ -1,68 +1,88 @@
 #include <stdio.h>
 
-void EncryptRotation(int key, FILE *input, FILE *output); //this function encrypts text using rotation, the inputs are the rotation key and plain text
-void DecryptRotation(int key, FILE *input, FILE *output); //this function decrypts text using rotation, the inputs are the rotation key and cypher text
-void EncryptSubstitution(char key[], FILE *input, FILE *output); //this function encrypts text using substitution, the inputs are the cypher key and plain text
-void DecryptSubstitution(char key[], FILE *input, FILE *output); //this function decrypts text using substitution, the inputs are the cypher key and cypher text 
+void EncryptRotation(int key, FILE *input, FILE *output); 
+void DecryptRotation(int key, FILE *input, FILE *output); 
+void EncryptSubstitution(char key[], FILE *input, FILE *output); 
+void DecryptSubstitution(char key[], FILE *input, FILE *output); 
 
 int main() {
 
-    /*  the task is to create a program where a task will be selected, as well as a key, and then given a text to either decrypt or encrypt
-        there will be a function for each task, with the function selected based on a variable entered or hard-coded
-        then resulting text will then be printed to the user
+    /*  This program program allows the user to select a task (rotation encryption, rotation decryption, substitution encryption, or substitution decryption), based off the user interface menu, and then a key,
+        and the program will modify the text from an existing file and then print the resulting text to a different file.
+        There is a function for each task.
+        First the user will have to enter the files to encrypt/decrypt, then the file to print to, then based of the task they choose they will be prompted to enter the key to be used.
         */
-    FILE *input;
-    FILE *output;
-    input = fopen("input.txt", "r");
-    output = fopen("output.txt", "w");
-    int task = 4; //for task selection
-    int RotationKey = 2; //rotation key
-    char SubstitutionKey[] = "CBADEFGHIJKLMNOPQRSTUVWXYZ"; //hardcoded substitution key
     
-    // for the final program the user will be prompted to enter the file name
+    char InputFile[50];   // this will be what the user enters as the input file to read off, length 50 as this is more than enough to fit a file's name
+    char OutputFile[50];   // similarly, but this time the output file, where the resulting text is printed to 
+    int task;   // integer used for task selection, user is prompter to choose a number
+    int RotationKey;    // integer used for the rotation key, user enters the rotation amount
+    char SubstitutionKey[26];   // this array will be used to store the substitution alphabet, which is why its length it 26, this is used as the substitution key
+    
+    // user is now prompted to enter the name of the file which will be read from and encrypted/decrypted
+    printf("Enter the name of the file you would like to encrypt/decrypt: ");
+    scanf("%s", InputFile);
+    FILE * input = fopen("InputFile", "r");
+    if(input == NULL)  {   // this function prints an error if the entered file does not exist, then stops the program
+        perror("fopen()");
+        return 0;
+    }
+    
+    // user is then prompted to enter the name of the file that the program will print to, with a similar error function
+    printf("Enter the name of the file you would like to print to: ");
+    scanf("%s", OutputFile);
+    FILE * output = fopen("OutputFile", "w");
+    if(input == NULL)  {
+        perror("fopen()");
+        return 0;
+    }
+    
+    // task selection menu is then printed, with its corresponding integers
+    printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
+    scanf("%d", &task);
 
-    //now displays a menu and prompts the user to enter the task number
-    //     printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
-    //     scanf("%d", &task);
-
+    // if/else if statements cause the program to complete the task chosen by the user
     if (task == 1) {
-        // printf("\nEnter rotation key: ");  //prompts user to enter rotation key
-        // scanf("%d", &RotationKey);
-        // printf("Enter message to encrypt: ");  //prompts user to enter text, still unsure of how to scan the text
-
-        //scanf("%c", &text);
-        //repeatedly read in characters
-        //if the number of characters read so far is above the max string length, 
-        //terminate the string, and stop reading
-        //if the character is not a newline, store it in a string
-        //otherwise, terminate the string
-
+        printf("\nEnter rotation key: ");  // prompts user to enter rotation key for encryption
+        scanf("%d", &RotationKey);
+        // the tasks all take place in seperate functions
         EncryptRotation(RotationKey, input, output);
     } else if (task == 2) {
+        printf("\nEnter rotation key: ");  // prompts user to enter rotation key for decryption
+        scanf("%d", &RotationKey);
         DecryptRotation(RotationKey, input, output);
     } else if (task == 3) {
+        printf("\nEnter substitution key: ");  // prompts the user to enter the substitution alphabet key
+        scanf("%s", SubstitutionKey);
         EncryptSubstitution(SubstitutionKey, input, output);
     } else if (task == 4) {
+        printf("\nEnter substitution key: ");
+        scanf("%s", SubstitutionKey);
         DecryptSubstitution(SubstitutionKey, input, output);
     } else {
-        printf("not a valid option\n"); // once scanf is implemented this could print the users selection
+        printf("\n'%d' is not a valid option.\n", task); // if the integer entered does not relate to a task, this will be printed as the user has not selected a valid option
     }
 
     return 0;
 }
 
 // function definitions
-void EncryptRotation(int key, FILE *input, FILE *output) { //this function is now working for what it can do
-    //for each character c in text
-    //set c in text to the rotated version of c
+
+/* This function reads the text from the inpyt file, and encrypts it using the rotation cipher. The inputs are the integer for the rotation amount, the input file, and the output file.
+   It works by taking the ascii number for each letter, giving it a number corresponding to its place in the alphabet, and then adding the key and finding its modulus of 26, then adding 65 to make it the capital letter.
+   If what is read is not a letter it will just be printed as it is.
+   There is no return value (void), because the output is printed during the function, this is common to all the following functions as they operate similarly. 
+   As all functions are reading from and printing to files, there are no restrictions to the length of text.
+ */
+void EncryptRotation(int key, FILE *input, FILE *output) { 
     while(feof(input) == 0)   {
-    char character; //the character that is being read from the input file
+    char character; // the character that is being read from the input file
     fscanf(input, "%c", &character);
-        if (character >= 65 && character <= 90) { //only does this if it is a capital letter
+        if (character >= 65 && character <= 90) { // only does this if it is a capital letter
             character = character - 65;
             character = (character + key) % 26;
             character = character + 65;
-        } else if (character >= 97 && character <= 122) { //changes lower case to upper case while encrypting
+        } else if (character >= 97 && character <= 122) { // changes lower case to upper case while encrypting
             character = character - 97;
             character = (character + key) % 26;
             character = character + 65;
@@ -72,7 +92,9 @@ void EncryptRotation(int key, FILE *input, FILE *output) { //this function is no
 }
 }
 
-void DecryptRotation(int key, FILE *input, FILE *output) { //this function also works
+/* This function takes the integer of the rotation key, the input file, and output file, and then works similarly to the encryption function, but to decrypt it sort of does the opposite, subtracting the rotation key.
+ */
+void DecryptRotation(int key, FILE *input, FILE *output) { 
    while(feof(input) == 0)   {
     char character;
     fscanf(input, "%c", &character);
@@ -92,15 +114,20 @@ void DecryptRotation(int key, FILE *input, FILE *output) { //this function also 
 }
 }
 
-void EncryptSubstitution(char key[], FILE *input, FILE *output) { //this function works
+/* This function encrypts text from a file using a given substitution key and prints it to another file.
+   It is given an array of the substitution alphabet, input and output file.
+   It works by taking a letter from the input file, finding its position in the alphabet and then assigning it with the letter from that position in the substitution key.
+   The substitution key must have 26 different characters entered correctly, this is somewhat a resistriction and is also an element of the next function.
+ */
+void EncryptSubstitution(char key[], FILE *input, FILE *output) {
     while(feof(input) == 0)   {
     char character;
     fscanf(input, "%c", &character);
-    int LetterNumber; //this int is used to the letter at a certain position in the key
-        if (character >= 65 && character <= 90) { //only does this if it is a capital letter
+    int LetterNumber;  // this integer is used to find the letters position in the substitution key
+        if (character >= 65 && character <= 90) {  // only does this if it is a capital letter
             LetterNumber = character - 65;
             character = key[LetterNumber];
-        } else if (character >= 97 && character <= 122) { //changes lower case to upper case and encrypts
+        } else if (character >= 97 && character <= 122) {  // changes lowercase to uppercase and encrypts
             LetterNumber = character - 97;
             character = key[LetterNumber];
         }
@@ -109,25 +136,30 @@ void EncryptSubstitution(char key[], FILE *input, FILE *output) { //this functio
 }
 }
 
+/* This function reads from an input file, decrypts using the given substitution text, and prints to another file.
+   Its inputs are the substitution alphabet array, and the input and output file.
+   It works by counting up a position number until the letter at that position in the key is equal to the letter being read from the input file. Once it reaches the letter, it takes this position number and substitutes in the letter from the correct alphabet at that position, thus substituting the letter from the correct position.
+   
+ */
 void DecryptSubstitution(char key[], FILE *input, FILE *output) {
     while(feof(input) == 0)   {
     char character;
     fscanf(input, "%c", &character);
     int PositionNumber; 
-    char Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //correct alphabet to compare key to 
+    char Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // correct alphabet to compare the substitution key to 
         if (character >= 65 && character <= 90) {
-            for (PositionNumber = 0; character != key[PositionNumber]; PositionNumber++) { //counting method to find what letter in the substitution key is equal to the letter being substituted
+            for (PositionNumber = 0; character != key[PositionNumber]; PositionNumber++) {  // counting method to find what letter in the substitution key is equal to the letter being substituted
             }
             character = Alphabet[PositionNumber];
             fprintf(output, "%c", character);
-        } else if (character >= 97 && character <= 122) { //decrypts lowercase text
+        } else if (character >= 97 && character <= 122) {  // decrypts lowercase text, prints it as uppercase
             character = character - 32; {
                 for (PositionNumber = 0; character != key[PositionNumber]; PositionNumber++) {
                 }
                 character = Alphabet[PositionNumber];
                 fprintf(output, "%c", character);
             }
-        } else { //this is so it will print things that aren't letters, just as they are
+        } else {  // this is so it will print things that aren't letters, just as they are
             fprintf(output, "%c", character);
         }
         
