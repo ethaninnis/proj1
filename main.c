@@ -22,7 +22,7 @@ int main() {
     // user is now prompted to enter the name of the file which will be read from and encrypted/decrypted
     printf("Enter the name of the file you would like to encrypt/decrypt: ");
     scanf("%s", InputFile);
-    FILE * input = fopen("InputFile", "r");
+    FILE * input = fopen(InputFile, "r");
     if(input == NULL)  {   // this function prints an error if the entered file does not exist, then stops the program
         perror("fopen()");
         return 0;
@@ -31,7 +31,7 @@ int main() {
     // user is then prompted to enter the name of the file that the program will print to, with a similar error function
     printf("Enter the name of the file you would like to print to: ");
     scanf("%s", OutputFile);
-    FILE * output = fopen("OutputFile", "w");
+    FILE * output = fopen(OutputFile, "w");
     if(input == NULL)  {
         perror("fopen()");
         return 0;
