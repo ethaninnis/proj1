@@ -20,7 +20,7 @@ int main() {
     char SubstitutionKey[26];   // this array will be used to store the substitution alphabet, which is why its length it 26, this is used as the substitution key
     
     // user is now prompted to enter the name of the file which will be read from and encrypted/decrypted
-    printf("Enter the name of the file you would like to encrypt/decrypt: ");
+    printf("\nEnter the name of the file you would like to encrypt/decrypt: ");
     scanf("%s", InputFile);
     FILE * input = fopen(InputFile, "r");
     if(input == NULL)  {   // this function prints an error if the entered file does not exist, then stops the program
@@ -29,7 +29,7 @@ int main() {
     }
     
     // user is then prompted to enter the name of the file that the program will print to, with a similar error function
-    printf("Enter the name of the file you would like to print to: ");
+    printf("\nEnter the name of the file you would like to print to: ");
     scanf("%s", OutputFile);
     FILE * output = fopen(OutputFile, "w");
     if(input == NULL)  {
@@ -38,7 +38,7 @@ int main() {
     }
     
     // task selection menu is then printed, with its corresponding integers
-    printf("Please enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
+    printf("\nPlease enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
     scanf("%d", &task);
 
     // if/else if statements cause the program to complete the task chosen by the user
@@ -47,32 +47,37 @@ int main() {
         scanf("%d", &RotationKey);
         // the tasks all take place in seperate functions
         EncryptRotation(RotationKey, input, output);
+        printf("\nEncryption complete!\n");
     } else if (task == 2) {
         printf("\nEnter rotation key: ");  // prompts user to enter rotation key for decryption
         scanf("%d", &RotationKey);
         DecryptRotation(RotationKey, input, output);
+        printf("\nDecryption complete!\n");
     } else if (task == 3) {
         printf("\nEnter substitution key: ");  // prompts the user to enter the substitution alphabet key
         scanf("%s", SubstitutionKey);
         EncryptSubstitution(SubstitutionKey, input, output);
+        printf("\nEncryption complete!\n");
     } else if (task == 4) {
         printf("\nEnter substitution key: ");
         scanf("%s", SubstitutionKey);
         DecryptSubstitution(SubstitutionKey, input, output);
+        printf("\nDecryption complete!\n");
     } else {
         printf("\n'%d' is not a valid option.\n", task); // if the integer entered does not relate to a task, this will be printed as the user has not selected a valid option
     }
+
 
     return 0;
 }
 
 // function definitions
 
-/* This function reads the text from the inpyt file, and encrypts it using the rotation cipher. The inputs are the integer for the rotation amount, the input file, and the output file.
+/* This function reads the text from the input file, and encrypts it using the rotation cipher. The inputs are the integer for the rotation amount, the input file, and the output file.
    It works by taking the ascii number for each letter, giving it a number corresponding to its place in the alphabet, and then adding the key and finding its modulus of 26, then adding 65 to make it the capital letter.
    If what is read is not a letter it will just be printed as it is.
    There is no return value (void), because the output is printed during the function, this is common to all the following functions as they operate similarly. 
-   As all functions are reading from and printing to files, there are no restrictions to the length of text.
+   As all functions are reading from and printing to files, there are no restrictions to the length of text, but the key should be from 1-25
  */
 void EncryptRotation(int key, FILE *input, FILE *output) { 
     while(feof(input) == 0)   {
@@ -93,12 +98,12 @@ void EncryptRotation(int key, FILE *input, FILE *output) {
 }
 
 /* This function takes the integer of the rotation key, the input file, and output file, and then works similarly to the encryption function, but to decrypt it sort of does the opposite, subtracting the rotation key.
+   Key should be from 1-25.
  */
 void DecryptRotation(int key, FILE *input, FILE *output) { 
    while(feof(input) == 0)   {
     char character;
     fscanf(input, "%c", &character);
-    
         if (character >= 65 && character <= 90) {
             character = character - 65;
             character = (character - key + 26) % 26;
@@ -108,10 +113,11 @@ void DecryptRotation(int key, FILE *input, FILE *output) {
             character = (character - key + 26) % 26;
             character = character + 65;
         }
-         fprintf(output, "%c", character);
-        
+         
+        fprintf(output, "%c", character);
     
 }
+    
 }
 
 /* This function encrypts text from a file using a given substitution key and prints it to another file.
@@ -163,6 +169,5 @@ void DecryptSubstitution(char key[], FILE *input, FILE *output) {
             fprintf(output, "%c", character);
         }
         
-    
 }
 }
