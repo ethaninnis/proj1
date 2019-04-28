@@ -36,7 +36,7 @@ int main() {
         perror("fopen()");
         return 0;
     }
-    
+  
     // task selection menu is then printed, with its corresponding integers
     printf("\nPlease enter the number corresponding to the task:\n(1) Rotation Encryption\n(2) Rotation Decryption\n(3) Substitution Encryption\n(4) Substitution Decryption\n");
     scanf("%d", &task);
@@ -53,6 +53,7 @@ int main() {
         scanf("%d", &RotationKey);
         DecryptRotation(RotationKey, input, output);
         printf("\nDecryption complete!\n");
+       
     } else if (task == 3) {
         printf("\nEnter substitution key: ");  // prompts the user to enter the substitution alphabet key
         scanf("%s", SubstitutionKey);
@@ -64,10 +65,12 @@ int main() {
         DecryptSubstitution(SubstitutionKey, input, output);
         printf("\nDecryption complete!\n");
     } else {
-        printf("\n'%d' is not a valid option.\n", task); // if the integer entered does not relate to a task, this will be printed as the user has not selected a valid option
+        printf("\n'%d' is not a valid option.\n", task); // If the integer entered does not relate to a task, this will be printed as the user has not selected a valid option.
     }
-
-
+    
+fseek(output,-1L,SEEK_END);   // After some research I found that this eliminates the error where a character was added to the end of the output file, by moving one character space back and replacing it with a space.
+fprintf(output, " ");
+    
     return 0;
 }
 
@@ -115,7 +118,7 @@ void DecryptRotation(int key, FILE *input, FILE *output) {
         }
          
         fprintf(output, "%c", character);
-    
+ 
 }
     
 }
